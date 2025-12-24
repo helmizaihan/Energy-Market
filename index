@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minutes of Meeting - Energy Market</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root { --energy-blue: #003366; --energy-accent: #007bff; }
+        body { background-color: #f0f2f5; padding-top: 40px; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        .minutes-card { background: white; padding: 60px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-top: 10px solid var(--energy-blue); }
+        .section-label { color: var(--energy-blue); font-weight: 700; font-size: 1.1rem; letter-spacing: 2px; text-transform: uppercase; border-bottom: 2px solid var(--energy-accent); display: inline-block; padding-bottom: 5px; margin-bottom: 15px; }
+        .meeting-title { font-weight: 800; color: #333; margin-bottom: 30px; }
+        .table-head { background-color: #f8f9fa; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; color: #666; }
+        .btn-action { min-width: 140px; font-weight: 600; }
+        textarea { border: 1px solid transparent !important; transition: border 0.3s; }
+        textarea:focus { border: 1px solid var(--energy-accent) !important; box-shadow: none !important; }
+        
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white; padding: 0; }
+            .minutes-card { box-shadow: none; border: none; padding: 20px; }
+            input, textarea { border: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mb-5">
+    <div class="minutes-card" id="minutesArea">
+        
+        <div class="text-center">
+            <div class="section-label">Section: Energy Market</div>
+            <h1 class="meeting-title">Minutes of Meeting</h1>
+        </div>
+
+        <div class="row g-4 mb-5 mt-2">
+            <div class="col-md-6">
+                <label class="form-label text-muted small fw-bold">SUBJECT / TITLE</label>
+                <input type="text" class="form-control form-control-lg fw-bold" id="mTitle" placeholder="e.g., LNG Procurement Review">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label text-muted small fw-bold">DATE</label>
+                <input type="date" class="form-control form-control-lg" id="mDate">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label text-muted small fw-bold">LOCATION</label>
+                <input type="text" class="form-control form-control-lg" id="mLoc" placeholder="Boardroom / Teams">
+            </div>
+            <div class="col-12">
+                <label class="form-label text-muted small fw-bold">ATTENDEES</label>
+                <textarea class="form-control" id="mAttendees" rows="2" placeholder="List participants..."></textarea>
+            </div>
+        </div>
+
+        <div class="mb-5">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="fw-bold mb-0">Discussion Points</h4>
+                <button class="btn btn-outline-primary btn-sm no-print" onclick="addRow('discussionBody')">+ Add Point</button>
+            </div>
+            <table class="table table-bordered">
+                <thead class="table-head">
+                    <tr>
+                        <th width="50">#</th>
+                        <th>Details / Deliberations</th>
+                        <th width="50" class="no-print"></th>
+                    </tr>
+                </thead>
+                <tbody id="discussionBody">
+                    <tr>
+                        <td class="text-center align-middle">1</td>
+                        <td><textarea class="form-control w-100" rows="1"></textarea></td>
+                        <td class="no-print text-center align-middle"><button class="btn btn-link text-danger p-0" onclick="removeRow(this)">×</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mb-5">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="fw-bold mb-0">Action Items</h4>
+                <button class="btn btn-outline-primary btn-sm no-print" onclick="addActionRow()">+ Add Task</button>
+            </div>
+            <table class="table table-bordered">
+                <thead class="table-head">
+                    <tr>
+                        <th>Action Required</th>
+                        <th width="200">Owner</th>
+                        <th width="150">Deadline</th>
+                        <th width="50" class="no-print"></th>
+                    </tr>
+                </thead>
+                <tbody id="actionBody">
+                    <tr>
+                        <td><input type="text" class="form-control"></td>
+                        <td><input type="text" class="form-control"></td>
+                        <td><input type="date" class="form-control"></td>
+                        <td class="no-print text-center align-middle"><button class="btn btn-link text-danger p-0" onclick="removeRow(this)">×</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="no-print border-top pt-4 mt-5">
+            <p class="text-muted fw-bold small mb-3">EXPORT & DISTRIBUTION</p>
+            <div class="d-flex flex-wrap gap-2">
+                <button class="btn btn-dark btn-action" onclick="window.print()">Save as PDF</button>
+                <button class="btn btn-primary btn-action" onclick="exportWord()">MS Word</button>
+                <button class="btn btn-outline-primary btn-action" onclick="shareEmail()">Email Client</button>
+                <button class="btn btn-success btn-action" onclick="shareWhatsApp()">WhatsApp</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Initialize current date
+    document.getElementById('mDate').valueAsDate = new Date();
+
+    function addRow(id) {
+        const body = document.getElementById(id);
+        const count = body.rows.length + 1;
+        const row = body.insertRow();
+        row.innerHTML = `<td class="text-center align-middle">${count}</td>
+                         <td><textarea class="form-control w-100" rows="1"></textarea></td>
+                         <td class="no-print text-center align-middle"><button class="btn btn-link text-danger p-0" onclick="removeRow(this)">×</button></td>`;
+    }
+
+    function addActionRow() {
+        const body = document.getElementById('actionBody');
+        const row = body.insertRow();
+        row.innerHTML = `<td><input type="text" class="form-control"></td>
+                         <td><input type="text" class="form-control"></td>
+                         <td><input type="date" class="form-control"></td>
+                         <td class="no-print text-center align-middle"><button class="btn btn-link text-danger p-0" onclick="removeRow(this)">×</button></td>`;
+    }
+
+    function removeRow(btn) {
+        btn.closest('tr').remove();
+    }
+
+    function exportWord() {
+        const header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'></head><body>";
+        const footer = "</body></html>";
+        const content = document.getElementById('minutesArea').innerHTML;
+        const blob = new Blob(['\ufeff', header + content + footer], { type: 'application/msword' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'Energy_Market_Minutes.doc';
+        link.click();
+    }
+
+    function shareEmail() {
+        const title = document.getElementById('mTitle').value || "Minutes";
+        const body = `Minutes of Meeting: ${title}\nSection: Energy Market\nDate: ${document.getElementById('mDate').value}`;
+        window.location.href = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
+    }
+
+    function shareWhatsApp() {
+        const title = document.getElementById('mTitle').value || "Meeting";
+        const msg = `*Energy Market - Minutes of Meeting*\n*Title:* ${title}\n*Date:* ${document.getElementById('mDate').value}`;
+        window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+</script>
+
+</body>
+</html>
