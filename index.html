@@ -1,196 +1,912 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Energy Market Minutes</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        :root { --text-main: #1a1a1a; --text-sub: #4a4a4a; --accent: #004a99; }
-        body { background-color: #fcfcfc; color: var(--text-main); font-family: 'Inter', sans-serif; padding: 40px 0; }
-        
-        .document-paper { 
-            background: white; 
-            max-width: 900px; 
-            margin: 0 auto; 
-            padding: 60px 80px; 
-            box-shadow: 0 0 20px rgba(0,0,0,0.03); 
-            border-radius: 2px;
-        }
-        
-        .dept-header { font-weight: 800; color: var(--accent); letter-spacing: 0.05em; margin-bottom: 5px; font-size: 1.1rem; text-transform: uppercase; }
-        .doc-title { font-family: 'Lora', serif; font-size: 2.2rem; font-weight: 700; margin-bottom: 40px; border-bottom: 2px solid #eee; padding-bottom: 20px; }
-        
-        /* Clean Document Inputs */
-        input, textarea { 
-            border: none !important; 
-            background: transparent !important; 
-            padding: 0 !important; 
-            width: 100%;
-            outline: none;
-            color: var(--text-main);
-        }
-        textarea { font-family: inherit; resize: none; overflow: hidden; }
-        
-        .meta-label { font-weight: 600; font-size: 0.75rem; color: #999; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px; }
-        .meta-value { border-bottom: 1px solid #f0f0f0 !important; padding-bottom: 5px !important; margin-bottom: 25px !important; transition: 0.3s; }
-        .meta-value:focus { border-bottom-color: var(--accent) !important; }
-        
-        /* Tables */
-        .table { margin-top: 15px; border-color: #f0f0f0; }
-        .table th { border-top: none; font-size: 0.8rem; color: #999; text-transform: uppercase; letter-spacing: 1px; padding: 12px 10px; font-weight: 600; }
-        .table td { padding: 12px 10px; vertical-align: top; }
-        
-        /* Prepared By Section */
-        .prepared-section { margin-top: 80px; border-top: 1px solid #eee; pt-4; }
-        .signature-line { border-bottom: 1px solid #1a1a1a !important; max-width: 300px; margin-bottom: 10px !important; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Minutes of Meeting</title>
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:#0f1a2e;
+      --muted:#9fb0d0;
+      --text:#eaf0ff;
+      --line:#223257;
+      --accent:#6ea8fe;
+      --good:#41c27d;
+      --warn:#ffc54d;
+      --bad:#ff6b6b;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+      background: radial-gradient(1100px 600px at 20% 0%, #15264a 0%, var(--bg) 55%) fixed;
+      color:var(--text);
+    }
+    header{
+      padding:20px 18px;
+      border-bottom:1px solid rgba(255,255,255,0.06);
+      position: sticky;
+      top: 0;
+      background: rgba(11,18,32,0.72);
+      backdrop-filter: blur(10px);
+      z-index: 10;
+    }
+    .wrap{max-width:1200px;margin:0 auto;padding:0 14px}
+    h1{margin:0;font-size:18px;letter-spacing:.2px}
+    .sub{margin-top:6px;color:var(--muted);font-size:13px}
+    .grid{
+      display:grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap:14px;
+      padding:16px 0 22px;
+      align-items:start;
+    }
+    @media (max-width: 980px){
+      .grid{grid-template-columns:1fr}
+      header{position:relative}
+    }
 
-        /* Control UI */
-        .controls { max-width: 900px; margin: 0 auto 30px auto; display: flex; gap: 10px; justify-content: center; }
-        .btn-doc { padding: 8px 18px; font-size: 0.85rem; font-weight: 600; border-radius: 4px; transition: 0.2s; }
-        .btn-add { background: #f8fafc; color: var(--accent); margin-top: 5px; font-size: 0.75rem; border: 1px dashed #cbd5e1; }
-        .btn-add:hover { background: #f1f5f9; }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius:14px;
+      padding:14px;
+      box-shadow: 0 18px 38px rgba(0,0,0,0.25);
+    }
+    .card h2{
+      margin:0 0 10px 0;
+      font-size:14px;
+      color:#d7e4ff;
+      letter-spacing:.2px;
+    }
 
-        @media print {
-            body { background: white; padding: 0; }
-            .document-paper { padding: 0; box-shadow: none; width: 100%; max-width: 100%; }
-            .no-print { display: none !important; }
-            .meta-value { border-bottom: none !important; }
-            .signature-line { border-bottom: 1px solid #000 !important; }
-            .table th { background-color: #fafafa !important; -webkit-print-color-adjust: exact; }
-        }
-    </style>
+    label{
+      display:block;
+      font-size:12px;
+      color:var(--muted);
+      margin:10px 0 6px;
+    }
+    input[type="text"], input[type="date"], input[type="time"], textarea, select{
+      width:100%;
+      padding:10px 10px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(10,18,34,0.85);
+      color: var(--text);
+      outline: none;
+    }
+    textarea{min-height:90px;resize:vertical;line-height:1.35}
+    .row{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+    .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+    @media (max-width: 620px){
+      .row, .row3{grid-template-columns:1fr}
+    }
+
+    .toolbar{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px;
+    }
+    button{
+      cursor:pointer;
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(110,168,254,0.14);
+      color: var(--text);
+      padding:9px 10px;
+      border-radius:10px;
+      font-size:12px;
+    }
+    button:hover{border-color: rgba(255,255,255,0.2); background: rgba(110,168,254,0.20)}
+    button.secondary{background: rgba(255,255,255,0.06)}
+    button.danger{background: rgba(255,107,107,0.14)}
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.04);
+      color: var(--muted);
+      font-size:12px;
+    }
+
+    .list{display:flex;flex-direction:column;gap:10px}
+    .item{
+      border:1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      border-radius:12px;
+      padding:10px;
+    }
+    .item-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+      margin-bottom:8px;
+    }
+    .item-title{
+      font-size:12px;
+      color:#cfe0ff;
+    }
+    .small{font-size:12px;color:var(--muted)}
+    .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    @media (max-width: 620px){ .two{grid-template-columns:1fr} }
+
+    .table{
+      width:100%;
+      border-collapse:separate;
+      border-spacing:0 8px;
+    }
+    .table th{
+      text-align:left;
+      font-size:11px;
+      color:var(--muted);
+      padding:0 8px 6px;
+    }
+    .table td{
+      padding:8px;
+      background: rgba(255,255,255,0.03);
+      border-top:1px solid rgba(255,255,255,0.08);
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+    .table td:first-child{border-left:1px solid rgba(255,255,255,0.08); border-top-left-radius:10px; border-bottom-left-radius:10px}
+    .table td:last-child{border-right:1px solid rgba(255,255,255,0.08); border-top-right-radius:10px; border-bottom-right-radius:10px}
+
+    .status{
+      font-weight:600;
+      font-size:11px;
+      padding:6px 8px;
+      border-radius:999px;
+      display:inline-block;
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+    }
+    .s-open{color:var(--warn)}
+    .s-done{color:var(--good)}
+    .s-blocked{color:var(--bad)}
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
+
+    .preview{
+      max-height: calc(100vh - 170px);
+      overflow:auto;
+    }
+    .preview .doc{
+      background: #ffffff;
+      color:#111;
+      border-radius:12px;
+      padding:18px;
+      border:1px solid rgba(0,0,0,0.08);
+    }
+    .doc h3{margin:0 0 10px 0;font-size:18px}
+    .doc .meta{font-size:12px;color:#444;margin-bottom:12px}
+    .doc hr{border:none;border-top:1px solid #ddd;margin:14px 0}
+    .doc h4{margin:14px 0 8px 0;font-size:14px}
+    .doc ul{margin:6px 0 0 18px}
+    .doc table{width:100%;border-collapse:collapse}
+    .doc th,.doc td{border:1px solid #ddd;padding:8px;font-size:12px;vertical-align:top}
+    .doc th{background:#f4f6f8}
+
+    /* Print styles */
+    @media print{
+      body{background:#fff}
+      header, .no-print{display:none !important}
+      .grid{display:block}
+      .card{box-shadow:none;border:none;background:none}
+      .preview{max-height:none;overflow:visible}
+      .preview .doc{border:none}
+    }
+  </style>
 </head>
 <body>
-
-<div class="controls no-print">
-    <button class="btn btn-dark btn-doc" onclick="window.print()">Save PDF / Print</button>
-    <button class="btn btn-primary btn-doc" onclick="exportWord()">Export to Word</button>
-    <button class="btn btn-outline-secondary btn-doc" onclick="shareWhatsApp()">Share via WhatsApp</button>
-</div>
-
-<div class="document-paper" id="contentToExport">
-    <div class="dept-header">Energy Market</div>
-    <h1 class="doc-title">Minutes of Meeting</h1>
-
-    <div class="row">
-        <div class="col-8">
-            <div class="meta-label">Subject</div>
-            <input type="text" class="meta-value" placeholder="Title of the discussion...">
-        </div>
-        <div class="col-4">
-            <div class="meta-label">Date</div>
-            <input type="date" id="mDate" class="meta-value">
-        </div>
-        <div class="col-12 mt-2">
-            <div class="meta-label">Attendees</div>
-            <textarea rows="1" class="meta-value" placeholder="Names of participants..." oninput="autoGrow(this)"></textarea>
-        </div>
+  <header class="no-print">
+    <div class="wrap">
+      <h1>Minutes of Meeting Recorder</h1>
+      <div class="sub">Fill in the form, then export to Word, PDF, email, or WhatsApp.</div>
     </div>
+  </header>
 
-    <div class="mt-4">
-        <h5 class="fw-bold mb-3">Discussion Summary</h5>
-        <table class="table" id="discussionTable">
-            <thead>
-                <tr>
-                    <th style="width: 5%">#</th>
-                    <th>Deliberations & Decisions</th>
-                    <th style="width: 5%" class="no-print"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td><textarea rows="1" placeholder="Record key point..." oninput="autoGrow(this)"></textarea></td>
-                    <td class="no-print text-end"><button class="btn btn-sm text-danger p-0" onclick="this.closest('tr').remove()">×</button></td>
-                </tr>
-            </tbody>
-        </table>
-        <button class="btn btn-sm btn-add no-print" onclick="addRow('discussionTable')">+ Add Discussion Point</button>
-    </div>
+  <main class="wrap">
+    <div class="grid">
+      <!-- LEFT: INPUTS -->
+      <section class="card no-print">
+        <h2>Meeting details</h2>
 
-    <div class="mt-5">
-        <h5 class="fw-bold mb-3">Action Items</h5>
-        <table class="table" id="actionTable">
-            <thead>
-                <tr>
-                    <th>Required Task</th>
-                    <th style="width: 25%">Owner</th>
-                    <th style="width: 20%">Deadline</th>
-                    <th style="width: 5%" class="no-print"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><input type="text" placeholder="Task description..."></td>
-                    <td><input type="text" placeholder="Name"></td>
-                    <td><input type="date"></td>
-                    <td class="no-print text-end"><button class="btn btn-sm text-danger p-0" onclick="this.closest('tr').remove()">×</button></td>
-                </tr>
-            </tbody>
-        </table>
-        <button class="btn btn-sm btn-add no-print" onclick="addActionRow()">+ Add Action Task</button>
-    </div>
+        <label>Meeting title</label>
+        <input id="m_title" type="text" placeholder="e.g., Gas Taskforce Weekly Sync"/>
 
-    <div class="prepared-section mt-5 pt-4">
         <div class="row">
-            <div class="col-6">
-                <div class="meta-label">Prepared By</div>
-                <input type="text" class="meta-value signature-line" placeholder="Name & Designation">
-                <div class="meta-label mt-2">Date of Report</div>
-                <input type="date" id="prepDate" class="meta-value">
-            </div>
+          <div>
+            <label>Date</label>
+            <input id="m_date" type="date"/>
+          </div>
+          <div>
+            <label>Time</label>
+            <input id="m_time" type="time"/>
+          </div>
         </div>
+
+        <div class="row">
+          <div>
+            <label>Location / Platform</label>
+            <input id="m_location" type="text" placeholder="e.g., Meeting Room 3 / Teams"/>
+          </div>
+          <div>
+            <label>Chair</label>
+            <input id="m_chair" type="text" placeholder="Name"/>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>Secretary / Minutes taker</label>
+            <input id="m_secretary" type="text" placeholder="Name"/>
+          </div>
+          <div>
+            <label>Meeting ID / Reference (optional)</label>
+            <input id="m_ref" type="text" placeholder="e.g., JKSE/MTG/2025/12"/>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>Attendees (one per line)</label>
+            <textarea id="m_attendees" placeholder="Name – Organization/Role"></textarea>
+          </div>
+          <div>
+            <label>Apologies (one per line)</label>
+            <textarea id="m_apologies" placeholder="Name – Organization/Role"></textarea>
+          </div>
+        </div>
+
+        <label>Agenda (one per line)</label>
+        <textarea id="m_agenda" placeholder="1) ...&#10;2) ..."></textarea>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:14px 0"/>
+
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+          <h2 style="margin:0;">Discussion points</h2>
+          <button id="add_discussion" class="secondary" type="button">+ Add discussion</button>
+        </div>
+        <div id="discussion_list" class="list" style="margin-top:10px;"></div>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:14px 0"/>
+
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+          <h2 style="margin:0;">Action items</h2>
+          <button id="add_action" class="secondary" type="button">+ Add action</button>
+        </div>
+
+        <div style="margin-top:10px; overflow:auto;">
+          <table class="table" aria-label="Action items">
+            <thead>
+              <tr>
+                <th style="min-width:220px;">Action</th>
+                <th style="min-width:140px;">Owner</th>
+                <th style="min-width:140px;">Due date</th>
+                <th style="min-width:110px;">Status</th>
+                <th style="min-width:110px;">Priority</th>
+                <th style="min-width:80px;"></th>
+              </tr>
+            </thead>
+            <tbody id="action_tbody"></tbody>
+          </table>
+        </div>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:14px 0"/>
+
+        <h2>Outputs</h2>
+        <div class="two">
+          <div>
+            <label>Decisions / Outputs (bullet style is fine)</label>
+            <textarea id="m_outputs" placeholder="• ..."></textarea>
+          </div>
+          <div>
+            <label>Next meeting / Follow-up (optional)</label>
+            <textarea id="m_next" placeholder="Date/time, topic, owner"></textarea>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <span class="pill">Autosave: <span id="autosave_state" class="mono">on</span></span>
+          <button id="save_draft" type="button">Save draft</button>
+          <button id="load_draft" class="secondary" type="button">Load draft</button>
+          <button id="clear_all" class="danger" type="button">Clear</button>
+        </div>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:14px 0"/>
+
+        <h2>Share / export</h2>
+        <div class="toolbar">
+          <button id="download_word" type="button">Download Word (.doc)</button>
+          <button id="print_pdf" type="button">Print / Save as PDF</button>
+          <button id="copy_text" class="secondary" type="button">Copy plain text</button>
+          <button id="email_draft" class="secondary" type="button">Open email draft</button>
+          <button id="wa_share" class="secondary" type="button">Open WhatsApp draft</button>
+        </div>
+
+        <div id="toast" class="small" style="margin-top:10px; color: var(--muted);"></div>
+      </section>
+
+      <!-- RIGHT: PREVIEW -->
+      <section class="card preview">
+        <h2 class="no-print">Preview</h2>
+        <div id="preview_doc" class="doc" aria-label="Minutes preview"></div>
+      </section>
     </div>
-</div>
+  </main>
 
-<script>
-    // Set default dates to today
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('mDate').value = today;
-    document.getElementById('prepDate').value = today;
+  <script>
+    // ===== Helpers =====
+    const $ = (id) => document.getElementById(id);
 
-    function autoGrow(element) {
-        element.style.height = "5px";
-        element.style.height = (element.scrollHeight) + "px";
+    function esc(s){
+      return (s ?? "")
+        .toString()
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
     }
 
-    function addRow(id) {
-        const table = document.getElementById(id).getElementsByTagName('tbody')[0];
-        const count = table.rows.length + 1;
-        const row = table.insertRow();
-        row.innerHTML = `<td>${count}</td>
-                         <td><textarea rows="1" oninput="autoGrow(this)"></textarea></td>
-                         <td class="no-print text-end"><button class="btn btn-sm text-danger p-0" onclick="this.closest('tr').remove()">×</button></td>`;
+    function linesToListHtml(text){
+      const lines = (text || "").split(/\r?\n/).map(x => x.trim()).filter(Boolean);
+      if (!lines.length) return "<p style='margin:0;color:#555'>—</p>";
+      return "<ul>" + lines.map(l => `<li>${esc(l)}</li>`).join("") + "</ul>";
     }
 
-    function addActionRow() {
-        const table = document.getElementById('actionTable').getElementsByTagName('tbody')[0];
-        const row = table.insertRow();
-        row.innerHTML = `<td><input type="text"></td>
-                         <td><input type="text"></td>
-                         <td><input type="date"></td>
-                         <td class="no-print text-end"><button class="btn btn-sm text-danger p-0" onclick="this.closest('tr').remove()">×</button></td>`;
+    function bulletsToListHtml(text){
+      // Accept lines starting with -, *, •, or normal lines
+      const lines = (text || "").split(/\r?\n/).map(x => x.trim()).filter(Boolean);
+      if (!lines.length) return "<p style='margin:0;color:#555'>—</p>";
+      return "<ul>" + lines.map(l => {
+        const cleaned = l.replace(/^[-*•]\s*/, "");
+        return `<li>${esc(cleaned)}</li>`;
+      }).join("") + "</ul>";
     }
 
-    function exportWord() {
-        const header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'></head><body>";
-        const footer = "</body></html>";
-        const content = document.getElementById('contentToExport').innerHTML;
-        const blob = new Blob(['\ufeff', header + content + footer], { type: 'application/msword' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = 'Energy_Market_Minutes.doc';
-        link.click();
+    function formatDate(yyyy_mm_dd){
+      if(!yyyy_mm_dd) return "";
+      const [y,m,d] = yyyy_mm_dd.split("-").map(Number);
+      const dt = new Date(y, m-1, d);
+      return dt.toLocaleDateString(undefined, { year:"numeric", month:"long", day:"numeric" });
     }
 
-    function shareWhatsApp() {
-        const subject = document.querySelector('input[placeholder="Title of the discussion..."]').value || "Meeting";
-        const msg = `*Energy Market Minutes*\n*Subject:* ${subject}\n*Date:* ${document.getElementById('mDate').value}\n\nThe document is ready for review.`;
-        window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+    function toast(msg){
+      $("toast").textContent = msg;
+      setTimeout(() => { $("toast").textContent = ""; }, 2400);
     }
-</script>
 
+    // ===== Dynamic sections: discussion points =====
+    let discussionId = 0;
+    function addDiscussionItem(data = {}){
+      discussionId++;
+      const wrap = document.createElement("div");
+      wrap.className = "item";
+      wrap.dataset.did = discussionId;
+
+      wrap.innerHTML = `
+        <div class="item-head">
+          <div class="item-title">Discussion #${discussionId}</div>
+          <button type="button" class="danger" data-remove="discussion">Remove</button>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>Topic</label>
+            <input type="text" data-k="topic" placeholder="e.g., LNG cargo cost recovery" value="${esc(data.topic || "")}">
+          </div>
+          <div>
+            <label>Owner / Lead (optional)</label>
+            <input type="text" data-k="lead" placeholder="Name" value="${esc(data.lead || "")}">
+          </div>
+        </div>
+
+        <label>Notes / Discussion</label>
+        <textarea data-k="notes" placeholder="Key points, context, options discussed...">${esc(data.notes || "")}</textarea>
+
+        <div class="row">
+          <div>
+            <label>Decision (optional)</label>
+            <textarea data-k="decision" placeholder="What was agreed?">${esc(data.decision || "")}</textarea>
+          </div>
+          <div>
+            <label>Supporting links / references (optional, one per line)</label>
+            <textarea data-k="refs" placeholder="https://...">${esc(data.refs || "")}</textarea>
+          </div>
+        </div>
+      `;
+
+      wrap.addEventListener("input", renderPreview);
+      wrap.querySelector('[data-remove="discussion"]').addEventListener("click", () => {
+        wrap.remove();
+        renderPreview();
+      });
+
+      $("discussion_list").appendChild(wrap);
+      renderPreview();
+    }
+
+    // ===== Dynamic sections: action items =====
+    let actionId = 0;
+    function addActionRow(data = {}){
+      actionId++;
+      const tr = document.createElement("tr");
+      tr.dataset.aid = actionId;
+
+      tr.innerHTML = `
+        <td>
+          <input type="text" data-k="action" placeholder="What needs to be done?" value="${esc(data.action || "")}">
+        </td>
+        <td>
+          <input type="text" data-k="owner" placeholder="Owner" value="${esc(data.owner || "")}">
+        </td>
+        <td>
+          <input type="date" data-k="due" value="${esc(data.due || "")}">
+        </td>
+        <td>
+          <select data-k="status">
+            <option value="Open">Open</option>
+            <option value="In progress">In progress</option>
+            <option value="Blocked">Blocked</option>
+            <option value="Done">Done</option>
+          </select>
+        </td>
+        <td>
+          <select data-k="priority">
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+            <option value="Low">Low</option>
+          </select>
+        </td>
+        <td style="text-align:right;">
+          <button type="button" class="danger" data-remove="action">Remove</button>
+        </td>
+      `;
+
+      tr.querySelector('[data-k="status"]').value = data.status || "Open";
+      tr.querySelector('[data-k="priority"]').value = data.priority || "Medium";
+
+      tr.addEventListener("input", renderPreview);
+      tr.querySelector('[data-remove="action"]').addEventListener("click", () => {
+        tr.remove();
+        renderPreview();
+      });
+
+      $("action_tbody").appendChild(tr);
+      renderPreview();
+    }
+
+    // ===== Collect data =====
+    function getFormData(){
+      const discussions = [...$("discussion_list").querySelectorAll(".item")].map(item => {
+        const get = (k) => item.querySelector(`[data-k="${k}"]`)?.value || "";
+        return {
+          topic: get("topic"),
+          lead: get("lead"),
+          notes: get("notes"),
+          decision: get("decision"),
+          refs: get("refs"),
+        };
+      });
+
+      const actions = [...$("action_tbody").querySelectorAll("tr")].map(tr => {
+        const get = (k) => tr.querySelector(`[data-k="${k}"]`)?.value || "";
+        return {
+          action: get("action"),
+          owner: get("owner"),
+          due: get("due"),
+          status: get("status"),
+          priority: get("priority"),
+        };
+      });
+
+      return {
+        title: $("m_title").value.trim(),
+        date: $("m_date").value,
+        time: $("m_time").value,
+        location: $("m_location").value.trim(),
+        chair: $("m_chair").value.trim(),
+        secretary: $("m_secretary").value.trim(),
+        ref: $("m_ref").value.trim(),
+        attendees: $("m_attendees").value,
+        apologies: $("m_apologies").value,
+        agenda: $("m_agenda").value,
+        discussions,
+        actions,
+        outputs: $("m_outputs").value,
+        next: $("m_next").value,
+      };
+    }
+
+    // ===== Render preview =====
+    function statusBadge(status){
+      const cls = status === "Done" ? "s-done" : (status === "Blocked" ? "s-blocked" : "s-open");
+      return `<span class="status ${cls}">${esc(status)}</span>`;
+    }
+
+    function renderPreview(){
+      const d = getFormData();
+
+      const headerTitle = d.title || "Minutes of Meeting";
+      const metaParts = [
+        d.ref ? `<b>Reference:</b> ${esc(d.ref)}` : "",
+        d.date ? `<b>Date:</b> ${esc(formatDate(d.date))}` : "",
+        d.time ? `<b>Time:</b> ${esc(d.time)}` : "",
+        d.location ? `<b>Location:</b> ${esc(d.location)}` : "",
+        d.chair ? `<b>Chair:</b> ${esc(d.chair)}` : "",
+        d.secretary ? `<b>Secretary:</b> ${esc(d.secretary)}` : "",
+      ].filter(Boolean);
+
+      const agendaHtml = linesToListHtml(d.agenda);
+      const attendeesHtml = linesToListHtml(d.attendees);
+      const apologiesHtml = linesToListHtml(d.apologies);
+
+      const discussionsHtml = (d.discussions.length)
+        ? d.discussions.map((x, i) => {
+            const refs = (x.refs || "").trim() ? linesToListHtml(x.refs) : "<p style='margin:0;color:#555'>—</p>";
+            return `
+              <div style="border:1px solid #e6e6e6;border-radius:10px;padding:10px;margin:10px 0;">
+                <div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline;">
+                  <div style="font-weight:700;">${esc(i+1)}. ${esc(x.topic || "Discussion item")}</div>
+                  <div style="font-size:12px;color:#555;">${x.lead ? `<b>Lead:</b> ${esc(x.lead)}` : ""}</div>
+                </div>
+                <div style="margin-top:8px;">
+                  <div style="font-size:12px;color:#333;"><b>Notes</b></div>
+                  <div style="white-space:pre-wrap;font-size:12px;color:#111;margin-top:4px;">${esc(x.notes || "—")}</div>
+                </div>
+                <div style="margin-top:8px;">
+                  <div style="font-size:12px;color:#333;"><b>Decision</b></div>
+                  <div style="white-space:pre-wrap;font-size:12px;color:#111;margin-top:4px;">${esc(x.decision || "—")}</div>
+                </div>
+                <div style="margin-top:8px;">
+                  <div style="font-size:12px;color:#333;"><b>References</b></div>
+                  <div style="margin-top:4px;">${refs}</div>
+                </div>
+              </div>
+            `;
+          }).join("")
+        : `<p style="margin:0;color:#555">—</p>`;
+
+      const actionsHtml = (d.actions.length)
+        ? `
+          <table>
+            <thead>
+              <tr>
+                <th style="width:40%;">Action</th>
+                <th style="width:16%;">Owner</th>
+                <th style="width:14%;">Due date</th>
+                <th style="width:14%;">Status</th>
+                <th style="width:16%;">Priority</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${d.actions.map(a => `
+                <tr>
+                  <td>${esc(a.action || "")}</td>
+                  <td>${esc(a.owner || "")}</td>
+                  <td>${esc(a.due ? formatDate(a.due) : "")}</td>
+                  <td>${esc(a.status || "")}</td>
+                  <td>${esc(a.priority || "")}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        `
+        : `<p style="margin:0;color:#555">—</p>`;
+
+      const outputsHtml = bulletsToListHtml(d.outputs);
+      const nextHtml = (d.next || "").trim()
+        ? `<div style="white-space:pre-wrap;font-size:12px;color:#111;">${esc(d.next)}</div>`
+        : `<p style="margin:0;color:#555">—</p>`;
+
+      $("preview_doc").innerHTML = `
+        <h3>${esc(headerTitle)}</h3>
+        <div class="meta">${metaParts.join(" &nbsp; | &nbsp; ") || "—"}</div>
+
+        <hr/>
+
+        <h4>Agenda</h4>
+        ${agendaHtml}
+
+        <h4>Attendance</h4>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div>
+            <div style="font-size:12px;color:#333;"><b>Attendees</b></div>
+            ${attendeesHtml}
+          </div>
+          <div>
+            <div style="font-size:12px;color:#333;"><b>Apologies</b></div>
+            ${apologiesHtml}
+          </div>
+        </div>
+
+        <hr/>
+
+        <h4>Discussion points</h4>
+        ${discussionsHtml}
+
+        <hr/>
+
+        <h4>Action items</h4>
+        ${actionsHtml}
+
+        <hr/>
+
+        <h4>Outputs</h4>
+        ${outputsHtml}
+
+        <h4>Next meeting / Follow-up</h4>
+        ${nextHtml}
+      `;
+
+      autoSave();
+    }
+
+    // ===== Plain-text for email / WhatsApp =====
+    function buildPlainText(){
+      const d = getFormData();
+      const title = d.title || "Minutes of Meeting";
+      const meta = [
+        d.ref ? `Reference: ${d.ref}` : null,
+        d.date ? `Date: ${formatDate(d.date)}` : null,
+        d.time ? `Time: ${d.time}` : null,
+        d.location ? `Location: ${d.location}` : null,
+        d.chair ? `Chair: ${d.chair}` : null,
+        d.secretary ? `Secretary: ${d.secretary}` : null,
+      ].filter(Boolean).join(" | ");
+
+      const listLines = (txt) => (txt || "")
+        .split(/\r?\n/).map(x => x.trim()).filter(Boolean)
+        .map(x => `- ${x}`).join("\n") || "- —";
+
+      const bulletLines = (txt) => (txt || "")
+        .split(/\r?\n/).map(x => x.trim()).filter(Boolean)
+        .map(x => `- ${x.replace(/^[-*•]\s*/, "")}`).join("\n") || "- —";
+
+      const discussions = d.discussions.length ? d.discussions.map((x, i) => {
+        const refs = (x.refs || "").trim()
+          ? (x.refs.split(/\r?\n/).map(s => s.trim()).filter(Boolean).map(s => `  - ${s}`).join("\n"))
+          : "  - —";
+        return [
+          `${i+1}. ${x.topic || "Discussion item"}`,
+          x.lead ? `   Lead: ${x.lead}` : null,
+          `   Notes: ${x.notes ? x.notes.replace(/\n/g, "\n   ") : "—"}`,
+          `   Decision: ${x.decision ? x.decision.replace(/\n/g, "\n   ") : "—"}`,
+          `   References:\n${refs}`
+        ].filter(Boolean).join("\n");
+      }).join("\n\n") : "—";
+
+      const actions = d.actions.length ? d.actions.map((a, i) => {
+        const due = a.due ? formatDate(a.due) : "";
+        return `${i+1}. ${a.action || ""}\n   Owner: ${a.owner || ""}\n   Due: ${due}\n   Status: ${a.status || ""}\n   Priority: ${a.priority || ""}`;
+      }).join("\n\n") : "—";
+
+      const outputs = bulletLines(d.outputs);
+      const next = (d.next || "").trim() ? d.next : "—";
+
+      return [
+        title,
+        meta ? meta : "",
+        "",
+        "Agenda:",
+        listLines(d.agenda),
+        "",
+        "Attendees:",
+        listLines(d.attendees),
+        "",
+        "Apologies:",
+        listLines(d.apologies),
+        "",
+        "Discussion points:",
+        discussions,
+        "",
+        "Action items:",
+        actions,
+        "",
+        "Outputs:",
+        outputs,
+        "",
+        "Next meeting / Follow-up:",
+        next
+      ].filter((line, idx, arr) => !(line === "" && arr[idx-1] === "")) // tidy double blanks
+       .join("\n");
+    }
+
+    // ===== Export: Word (.doc via HTML) =====
+    function downloadWord(){
+      const d = getFormData();
+      const filenameBase = (d.title || "Minutes_of_Meeting").replace(/[^\w\-]+/g, "_").slice(0, 60);
+      const html = `
+        <html xmlns:o="urn:schemas-microsoft-com:office:office"
+              xmlns:w="urn:schemas-microsoft-com:office:word"
+              xmlns="http://www.w3.org/TR/REC-html40">
+          <head>
+            <meta charset="utf-8">
+            <title>${esc(d.title || "Minutes of Meeting")}</title>
+            <style>
+              body{font-family:Calibri, Arial, sans-serif; font-size:11pt; color:#111}
+              h1{font-size:16pt;margin:0 0 10pt 0}
+              h2{font-size:12pt;margin:14pt 0 6pt 0}
+              table{border-collapse:collapse;width:100%}
+              th,td{border:1px solid #d0d0d0; padding:6pt; vertical-align:top}
+              th{background:#f3f5f7}
+              .meta{color:#444;font-size:10pt;margin-bottom:10pt}
+              .box{border:1px solid #d0d0d0; padding:8pt; border-radius:6pt; margin:8pt 0}
+              ul{margin:4pt 0 0 18pt}
+            </style>
+          </head>
+          <body>
+            ${$("preview_doc").innerHTML}
+          </body>
+        </html>
+      `.trim();
+
+      const blob = new Blob(["\ufeff", html], { type: "application/msword" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${filenameBase}.doc`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      toast("Downloaded Word file.");
+    }
+
+    // ===== Export: Print / PDF =====
+    function printToPdf(){
+      window.print();
+    }
+
+    // ===== Share: copy text, email, WhatsApp =====
+    async function copyPlainText(){
+      const txt = buildPlainText();
+      try{
+        await navigator.clipboard.writeText(txt);
+        toast("Copied to clipboard.");
+      }catch(e){
+        // fallback
+        const ta = document.createElement("textarea");
+        ta.value = txt;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        ta.remove();
+        toast("Copied to clipboard.");
+      }
+    }
+
+    function openEmailDraft(){
+      const d = getFormData();
+      const subject = encodeURIComponent(d.title ? `Minutes: ${d.title}` : "Minutes of Meeting");
+      const body = encodeURIComponent(buildPlainText());
+      // Note: mailto length limits vary by device/email client
+      window.location.href = `mailto:?subject=${subject}&body=${body}`;
+    }
+
+    function openWhatsAppDraft(){
+      const text = encodeURIComponent(buildPlainText());
+      // Works for WhatsApp Web and mobile
+      window.open(`https://wa.me/?text=${text}`, "_blank", "noopener,noreferrer");
+    }
+
+    // ===== Save / load =====
+    const STORAGE_KEY = "mom_minutes_draft_v1";
+
+    function autoSave(){
+      try{
+        const payload = getFormData();
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      }catch(e){
+        // ignore
+      }
+    }
+
+    function saveDraft(){
+      try{
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(getFormData()));
+        toast("Draft saved.");
+      }catch(e){
+        toast("Could not save draft in this browser.");
+      }
+    }
+
+    function clearAll(){
+      if(!confirm("Clear everything? This cannot be undone.")) return;
+      // Basic fields
+      ["m_title","m_date","m_time","m_location","m_chair","m_secretary","m_ref","m_attendees","m_apologies","m_agenda","m_outputs","m_next"]
+        .forEach(id => $(id).value = "");
+
+      // Dynamic sections
+      $("discussion_list").innerHTML = "";
+      $("action_tbody").innerHTML = "";
+      discussionId = 0;
+      actionId = 0;
+
+      try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
+      renderPreview();
+      toast("Cleared.");
+    }
+
+    function loadDraft(){
+      let raw = null;
+      try{ raw = localStorage.getItem(STORAGE_KEY); }catch(e){}
+      if(!raw){
+        toast("No saved draft found.");
+        return;
+      }
+      const d = JSON.parse(raw);
+
+      // Basic fields
+      $("m_title").value = d.title || "";
+      $("m_date").value = d.date || "";
+      $("m_time").value = d.time || "";
+      $("m_location").value = d.location || "";
+      $("m_chair").value = d.chair || "";
+      $("m_secretary").value = d.secretary || "";
+      $("m_ref").value = d.ref || "";
+      $("m_attendees").value = d.attendees || "";
+      $("m_apologies").value = d.apologies || "";
+      $("m_agenda").value = d.agenda || "";
+      $("m_outputs").value = d.outputs || "";
+      $("m_next").value = d.next || "";
+
+      // Dynamic sections
+      $("discussion_list").innerHTML = "";
+      $("action_tbody").innerHTML = "";
+      discussionId = 0;
+      actionId = 0;
+
+      (d.discussions || []).forEach(addDiscussionItem);
+      (d.actions || []).forEach(addActionRow);
+
+      renderPreview();
+      toast("Draft loaded.");
+    }
+
+    // ===== Wire up events =====
+    [
+      "m_title","m_date","m_time","m_location","m_chair","m_secretary","m_ref",
+      "m_attendees","m_apologies","m_agenda","m_outputs","m_next"
+    ].forEach(id => $(id).addEventListener("input", renderPreview));
+
+    $("add_discussion").addEventListener("click", () => addDiscussionItem());
+    $("add_action").addEventListener("click", () => addActionRow());
+
+    $("download_word").addEventListener("click", downloadWord);
+    $("print_pdf").addEventListener("click", printToPdf);
+    $("copy_text").addEventListener("click", copyPlainText);
+    $("email_draft").addEventListener("click", openEmailDraft);
+    $("wa_share").addEventListener("click", openWhatsAppDraft);
+
+    $("save_draft").addEventListener("click", saveDraft);
+    $("load_draft").addEventListener("click", loadDraft);
+    $("clear_all").addEventListener("click", clearAll);
+
+    // ===== Initialize with a starter layout =====
+    (function init(){
+      // Set default date to today (local)
+      const now = new Date();
+      const yyyy = now.getFullYear();
+      const mm = String(now.getMonth()+1).padStart(2,"0");
+      const dd = String(now.getDate()).padStart(2,"0");
+      $("m_date").value = `${yyyy}-${mm}-${dd}`;
+
+      // Starter items
+      addDiscussionItem({ topic: "Opening and agenda confirmation" });
+      addDiscussionItem({ topic: "Key updates" });
+      addActionRow({ action: "Share minutes with attendees", status: "Open", priority: "Medium" });
+
+      renderPreview();
+    })();
+  </script>
 </body>
 </html>
