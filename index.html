@@ -3,201 +3,219 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Energy Market - Discussion Notes</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <title>Energy Market | Discussion Notes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
     <style>
-        :root { 
-            --navy: #002347; 
-            --teal: #00a8a8; 
-            --slate: #64748b;
-        }
-        
-        /* Font size reduced for space optimization */
-        body { 
-            background-color: #f8fafc; 
-            color: #1e293b; 
-            font-family: 'Inter', sans-serif; 
-            font-size: 0.85rem; 
-            padding: 20px 0; 
+        :root {
+            --md-primary: #1a73e8; /* Google Blue */
+            --md-surface: #f8f9fa;
+            --md-on-surface: #1f1f1f;
+            --md-outline: #c4c7c5;
+            --energy-navy: #041e42;
         }
 
-        .document-sheet {
-            background: #fff;
+        body { 
+            background-color: #f1f3f4; 
+            color: var(--md-on-surface); 
+            font-family: 'Roboto', sans-serif; 
+            font-size: 0.82rem; /* Optimized space */
+            padding: 30px 0;
+        }
+
+        .document-container {
+            background: #ffffff;
             width: 210mm;
             min-height: 297mm;
             margin: 0 auto;
-            padding: 40px 60px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            border-top: 10px solid var(--navy);
+            padding: 50px 70px;
+            border-radius: 24px; /* Material Design style */
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            position: relative;
         }
 
-        /* Prominent Header */
-        .brand-header { text-align: center; margin-bottom: 30px; }
-        .energy-title { 
-            font-weight: 900; 
-            font-size: 2.5rem; 
-            color: var(--navy); 
-            letter-spacing: -1px;
-            margin-bottom: 0;
-            line-height: 1;
+        /* Prominent Header Styling */
+        .brand-header { margin-bottom: 40px; border-left: 6px solid var(--md-primary); padding-left: 20px; }
+        .energy-market-title { 
+            font-family: 'Google Sans', sans-serif;
+            font-weight: 700;
+            font-size: 2.2rem;
+            color: var(--energy-navy);
+            letter-spacing: -0.5px;
+            margin: 0;
         }
-        .notes-subtitle { 
-            font-weight: 600; 
-            font-size: 0.9rem; 
-            color: var(--teal); 
-            text-transform: uppercase; 
-            letter-spacing: 3px;
+        .discussion-subtitle { 
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--md-primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: -5px;
         }
 
-        /* Compact Metadata */
-        .meta-row { border-bottom: 1px solid #f1f5f9; padding-bottom: 15px; margin-bottom: 20px; }
-        .label { font-size: 0.65rem; font-weight: 700; color: var(--slate); text-transform: uppercase; margin-bottom: 2px; }
-        
+        /* Material Input Styling */
         input, textarea {
             border: none !important;
             background: transparent !important;
             width: 100%;
             outline: none;
             color: inherit;
-            padding: 0;
-            display: block;
+            padding: 4px 0;
+            transition: all 0.2s;
         }
-        textarea { resize: none; overflow: hidden; min-height: 1.5em; }
+        textarea { resize: none; overflow: hidden; line-height: 1.6; }
+        input:focus, textarea:focus { border-bottom: 2px solid var(--md-primary) !important; }
 
-        /* Attendee List */
-        .attendee-entry {
-            display: inline-block;
-            background: #f8fafc;
-            padding: 2px 10px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            margin: 0 4px 4px 0;
-            border: 1px solid #e2e8f0;
+        .meta-section { display: grid; grid-template-columns: 1fr 200px; gap: 40px; margin-bottom: 30px; }
+        .label { font-size: 0.68rem; font-weight: 700; color: var(--md-primary); text-transform: uppercase; margin-bottom: 2px; }
+
+        /* Attendee Chips */
+        .attendee-chip {
+            display: inline-flex;
+            align-items: center;
+            background: #e8f0fe;
+            color: #1967d2;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            margin: 0 6px 6px 0;
+            border: 1px solid #d2e3fc;
         }
-        .org-text { color: var(--teal); font-weight: 600; font-size: 0.75rem; }
+        .org-tag { font-weight: 400; opacity: 0.8; margin-left: 4px; }
 
-        /* Tables */
-        .table { margin-top: 5px; table-layout: fixed; }
+        /* Professional Tables */
+        .table { margin-top: 10px; border-collapse: separate; border-spacing: 0; }
         .table thead th { 
-            background-color: var(--navy); 
-            color: #fff; 
-            font-size: 0.7rem; 
-            padding: 8px 10px;
-            border: none;
+            background: #f1f3f4;
+            color: #444746;
+            font-weight: 600;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            padding: 10px;
+            border-bottom: 2px solid var(--md-outline);
         }
-        .table td { border-bottom: 1px solid #f8fafc; padding: 8px 10px; vertical-align: top; }
+        .table td { padding: 12px 10px; border-bottom: 1px solid #f1f3f4; vertical-align: top; }
+        .row-num { color: var(--md-primary); font-weight: 700; font-size: 0.75rem; text-align: center; }
 
-        /* Toolbars */
-        .toolbar { position: fixed; top: 15px; right: 15px; display: flex; flex-direction: column; gap: 5px; z-index: 1000; }
-        .btn-ui { background: #fff; border: 1px solid var(--navy); color: var(--navy); font-weight: 700; padding: 6px 12px; border-radius: 4px; font-size: 0.75rem; }
-        .btn-ui:hover { background: var(--navy); color: #fff; }
-        .btn-add { background: transparent; border: 1px dashed var(--teal); color: var(--teal); font-size: 0.7rem; font-weight: 700; padding: 2px 10px; border-radius: 3px; margin-top: 5px; }
+        /* Toolbar / Floating Action Buttons */
+        .toolbar { position: fixed; top: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 1000; }
+        .fab {
+            background: white; border: none; padding: 12px 20px; border-radius: 16px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15); font-weight: 600; color: var(--md-primary);
+            display: flex; align-items: center; gap: 10px; transition: 0.3s;
+        }
+        .fab:hover { background: var(--md-primary); color: white; transform: translateY(-2px); }
+        .btn-add { 
+            color: var(--md-primary); background: transparent; border: 1px dashed var(--md-outline);
+            padding: 6px 15px; border-radius: 8px; font-weight: 600; font-size: 0.75rem; margin-top: 5px;
+        }
 
         @media print {
             body { background: #fff; padding: 0; }
-            .document-sheet { box-shadow: none; width: 100%; padding: 0; margin: 0; }
+            .document-container { box-shadow: none; border-radius: 0; border-top: none; width: 100%; padding: 0; }
             .no-print { display: none !important; }
-            .attendee-entry { background: transparent; border: none; padding: 0; }
-            .attendee-entry::after { content: "; "; }
-            .attendee-entry:last-child::after { content: ""; }
+            .attendee-chip { background: transparent; border: none; padding: 0; color: #000; }
+            .attendee-chip::after { content: "; "; }
+            .attendee-chip:last-child::after { content: ""; }
+            .table thead th { background: #eee !important; color: #000 !important; }
         }
     </style>
 </head>
 <body>
 
 <div class="toolbar no-print">
-    <button class="btn-ui" onclick="window.print()">Save PDF</button>
-    <button class="btn-ui" onclick="exportWord()">Export Word</button>
+    <button class="fab" onclick="window.print()"><span class="material-icons-outlined">picture_as_pdf</span> Save as PDF</button>
+    <button class="fab" onclick="exportWord()"><span class="material-icons-outlined">description</span> MS Word</button>
 </div>
 
-<div class="document-sheet" id="docFrame">
+<div class="document-container" id="content">
     <div class="brand-header">
-        <h1 class="energy-title">ENERGY MARKET</h1>
-        <p class="notes-subtitle">Discussion Notes</p>
+        <h1 class="energy-market-title">ENERGY MARKET</h1>
+        <p class="discussion-subtitle">Discussion Notes</p>
     </div>
 
-    <div class="row meta-row">
-        <div class="col-9 border-end">
-            <div class="label">Subject</div>
-            <input type="text" class="fw-bold" style="font-size: 1.1rem; color: var(--navy);" placeholder="e.g. TNB Residential Tariff Review">
+    <div class="meta-section">
+        <div>
+            <div class="label">Agenda / Subject</div>
+            <input type="text" style="font-size: 1.15rem; font-weight: 600;" placeholder="Enter meeting focus...">
         </div>
-        <div class="col-3 ps-3 text-end">
+        <div class="text-end">
             <div class="label">Date (Malaysia)</div>
-            <input type="text" id="myDate" class="fw-bold text-end" placeholder="DD/MM/YYYY">
+            <input type="text" id="myDate" class="text-end fw-bold" placeholder="DD/MM/YYYY">
         </div>
     </div>
 
     <div class="mb-4">
-        <div class="label">Attendees & Organizations</div>
-        <div id="attendeeList" class="mb-2"></div>
-        <div class="row g-1 no-print" style="max-width: 500px;">
-            <div class="col-5"><input type="text" id="attName" class="form-control form-control-sm border" placeholder="Name"></div>
-            <div class="col-5"><input type="text" id="attOrg" class="form-control form-control-sm border" placeholder="Organization"></div>
-            <div class="col-2"><button class="btn btn-sm btn-dark w-100" onclick="addAttendee()">Add</button></div>
+        <div class="label">Attendance List</div>
+        <div id="attendeeWrapper" class="mb-2"></div>
+        <div class="row g-2 no-print" style="max-width: 550px;">
+            <div class="col-5"><input type="text" id="attName" class="form-control form-control-sm" placeholder="Participant Name" style="background: #f8f9fa !important; border: 1px solid #ddd !important; padding: 5px 10px !important;"></div>
+            <div class="col-5"><input type="text" id="attOrg" class="form-control form-control-sm" placeholder="Organization" style="background: #f8f9fa !important; border: 1px solid #ddd !important; padding: 5px 10px !important;"></div>
+            <div class="col-2"><button class="btn btn-sm btn-primary w-100" onclick="addAttendee()">Add</button></div>
         </div>
     </div>
 
     <div class="mb-4">
-        <h6 class="fw-bold" style="color: var(--navy); border-left: 3px solid var(--teal); padding-left: 10px; font-size: 0.8rem; text-transform: uppercase;">1. Discussion Points</h6>
+        <h6 class="fw-bold" style="color: var(--energy-navy); font-size: 0.8rem; margin-bottom: 10px;">01. DELIBERATIONS & DECISIONS</h6>
         <table class="table" id="discTable">
             <thead>
                 <tr>
-                    <th style="width: 35px" class="text-center">#</th>
-                    <th>Deliberations</th>
-                    <th style="width: 35px" class="no-print"></th>
+                    <th style="width: 40px" class="text-center">#</th>
+                    <th>Discussion Summary</th>
+                    <th style="width: 40px" class="no-print"></th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td class="text-center text-muted small fw-bold">01</td>
-                    <td><textarea rows="1" placeholder="Type here..." oninput="autoGrow(this)"></textarea></td>
-                    <td class="no-print text-end"><button class="btn btn-sm text-danger p-0" onclick="this.closest('tr').remove()">×</button></td>
+                    <td class="row-num">01</td>
+                    <td><textarea rows="1" placeholder="Start typing details..." oninput="autoGrow(this)"></textarea></td>
+                    <td class="no-print text-center"><button class="btn btn-sm text-danger" onclick="this.closest('tr').remove()">×</button></td>
                 </tr>
             </tbody>
         </table>
-        <button class="btn-add no-print" onclick="addDiscRow()">+ Add Point</button>
+        <button class="btn-add no-print" onclick="addDiscRow()">+ Add Discussion Point</button>
     </div>
 
-    <div class="mb-4">
-        <h6 class="fw-bold" style="color: var(--navy); border-left: 3px solid var(--teal); padding-left: 10px; font-size: 0.8rem; text-transform: uppercase;">2. Action Items</h6>
+    <div class="mb-5">
+        <h6 class="fw-bold" style="color: var(--energy-navy); font-size: 0.8rem; margin-bottom: 10px;">02. ASSIGNED ACTIONS</h6>
         <table class="table" id="actTable">
             <thead>
                 <tr>
-                    <th style="width: 35px" class="text-center">#</th>
+                    <th style="width: 40px" class="text-center">#</th>
                     <th>Task Description</th>
-                    <th style="width: 150px">Owner</th>
-                    <th style="width: 110px">Deadline</th>
-                    <th style="width: 35px" class="no-print"></th>
+                    <th style="width: 160px">Action Owner</th>
+                    <th style="width: 120px">Deadline</th>
+                    <th style="width: 40px" class="no-print"></th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td class="text-center text-muted small fw-bold">01</td>
-                    <td><textarea rows="1" placeholder="Task..." oninput="autoGrow(this)"></textarea></td>
+                    <td class="row-num">01</td>
+                    <td><textarea rows="1" placeholder="Describe the task..." oninput="autoGrow(this)"></textarea></td>
                     <td><input type="text" placeholder="Name"></td>
                     <td><input type="text" placeholder="DD/MM/YYYY"></td>
-                    <td class="no-print text-end"><button class="btn btn-sm text-danger p-0" onclick="this.closest('tr').remove()">×</button></td>
+                    <td class="no-print text-center"><button class="btn btn-sm text-danger" onclick="this.closest('tr').remove()">×</button></td>
                 </tr>
             </tbody>
         </table>
-        <button class="btn-add no-print" onclick="addActRow()">+ Add Action</button>
+        <button class="btn-add no-print" onclick="addActRow()">+ Add Action Task</button>
     </div>
 
     <div class="mt-5 pt-3 border-top">
         <div class="label">Prepared By</div>
-        <input type="text" class="fw-bold" style="max-width: 250px; border-bottom: 1.5px solid var(--navy) !important;" placeholder="Name / Designation">
-        <p class="text-muted mt-1" style="font-size: 0.6rem;">Energy Market Section | Internal Record</p>
+        <input type="text" class="fw-bold" style="max-width: 250px; border-bottom: 1px solid var(--energy-navy) !important;" placeholder="Enter Name">
+        <div style="font-size: 0.65rem; color: #888; margin-top: 4px;">Energy Market Internal Communication</div>
     </div>
 </div>
 
 <script>
-    // Set Malaysian Date
-    window.onload = function() {
-        const t = new Date();
-        const d = String(t.getDate()).padStart(2, '0') + '/' + String(t.getMonth() + 1).padStart(2, '0') + '/' + t.getFullYear();
-        document.getElementById('myDate').value = d;
-    }
+    // Initialize Malaysian Date
+    const today = new Date();
+    const formattedDate = String(today.getDate()).padStart(2, '0') + '/' + String(today.getMonth() + 1).padStart(2, '0') + '/' + today.getFullYear();
+    document.getElementById('myDate').value = formattedDate;
 
     function autoGrow(el) {
         el.style.height = 'auto';
@@ -208,11 +226,11 @@
         const name = document.getElementById('attName').value.trim();
         const org = document.getElementById('attOrg').value.trim();
         if (name && org) {
-            const list = document.getElementById('attendeeList');
-            const entry = document.createElement('span');
-            entry.className = 'attendee-entry';
-            entry.innerHTML = `${name} <span class="org-text">(${org})</span> <span class="no-print" style="cursor:pointer; color:red; margin-left:5px" onclick="this.parentElement.remove()">×</span>`;
-            list.appendChild(entry);
+            const wrap = document.getElementById('attendeeWrapper');
+            const chip = document.createElement('span');
+            chip.className = 'attendee-chip';
+            chip.innerHTML = `${name} <span class="org-tag">(${org})</span> <span class="no-print ms-2" style="cursor:pointer; color:red" onclick="this.parentElement.remove()">×</span>`;
+            wrap.appendChild(chip);
             document.getElementById('attName').value = '';
             document.getElementById('attOrg').value = '';
             document.getElementById('attName').focus();
@@ -223,27 +241,27 @@
         const tbody = document.getElementById('discTable').querySelector('tbody');
         const row = tbody.insertRow();
         const num = String(tbody.rows.length).padStart(2, '0');
-        row.innerHTML = `<td class="text-center text-muted small fw-bold">${num}</td>
+        row.innerHTML = `<td class="row-num">${num}</td>
                          <td><textarea rows="1" oninput="autoGrow(this)"></textarea></td>
-                         <td class="no-print text-end"><button class="btn btn-sm text-danger p-0" onclick="this.closest('tr').remove()">×</button></td>`;
+                         <td class="no-print text-center"><button class="btn btn-sm text-danger" onclick="this.closest('tr').remove()">×</button></td>`;
     }
 
     function addActRow() {
         const tbody = document.getElementById('actTable').querySelector('tbody');
         const row = tbody.insertRow();
         const num = String(tbody.rows.length).padStart(2, '0');
-        row.innerHTML = `<td class="text-center text-muted small fw-bold">${num}</td>
+        row.innerHTML = `<td class="row-num">${num}</td>
                          <td><textarea rows="1" oninput="autoGrow(this)"></textarea></td>
                          <td><input type="text"></td>
                          <td><input type="text" placeholder="DD/MM/YYYY"></td>
-                         <td class="no-print text-end"><button class="btn btn-sm text-danger p-0" onclick="this.closest('tr').remove()">×</button></td>`;
+                         <td class="no-print text-center"><button class="btn btn-sm text-danger" onclick="this.closest('tr').remove()">×</button></td>`;
     }
 
     function exportWord() {
-        const blob = new Blob(['\ufeff', document.getElementById('docFrame').innerHTML], { type: 'application/msword' });
+        const blob = new Blob(['\ufeff', document.getElementById('content').innerHTML], { type: 'application/msword' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
-        link.download = 'Energy_Market_Notes.doc';
+        link.download = 'Discussion_Notes.doc';
         link.click();
     }
 </script>
